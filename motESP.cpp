@@ -68,3 +68,6 @@ void motesp::moverPWM(char dir){
 	break;
 	}
 }
+void motesp::seleccionarVelocidad(int valor){
+	this->velocidad = valor;
+}

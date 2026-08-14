@@ -1,17 +1,17 @@
 #include "motESP.h"
+#include <driver/ledc.h> 
 //hey, si estas leyendo esto, preparate para el mucho texto :)
-
+#ifndef ESP32
+  #define ESP32
+#endif
 void motesp::iniciarPWM(int EN,int CO1,int CO2,int torque){
 	this-> en = EN;
 	this-> co1 = CO1;
 	this-> co2 = CO2;
-	ledcSetup(en, frequency, resolution);
-	ledcSetup(co1, frequency, resolution);
-	ledcSetup(co2, frequency, resolution);
-	ledcAttachPin(en,ledChannel);
-	ledcAttachPin(co1,ledChannel);
-	ledcAttachPin(co2,ledChannel);
 	this-> velocidad = torque;
+    ledcAttach(en, frequency, resolution);
+	pinMode(co1,OUTPUT);
+	pinMode(co2,OUTPUT);
 }
 void motesp::iniciar(int EN, int CO1,int CO2){
 	this-> en = EN;

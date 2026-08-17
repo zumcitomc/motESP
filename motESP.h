@@ -3,7 +3,7 @@
 #ifndef motESP
 #define motESP
 
-//hey, si estas leyendo esto, preparate para el mucho texto :)
+//hey, si estas leyendo esto, preparate para el mucho texto >:D
 class motesp{
 private:
 	int EN;

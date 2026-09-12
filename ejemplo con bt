@@ -1,0 +1,100 @@
+#include <motESP.h>
+#include <Arduino.h>
+#include <BluetoothSerial.h>
+motesp motora;
+motesp motorb;
+String device_name = "vddsd6jed5i";
+
+#if !defined(CONFIG_BT_ENABLED) || !defined(CONFIG_BLUEDROID_ENABLED)
+#error Bluetooth is not enabled! Please run `make menuconfig` to enable it
+#endif
+
+#if !defined(CONFIG_BT_SPP_ENABLED)
+#error Serial Port Profile for Bluetooth is not available or not enabled.
+#endif
+
+BluetoothSerial SerialBT;  //crea objeto
+
+// const int buzzer = 13;
+const int ena = 17;
+const int m11 = 25;
+const int m12 = 26;
+const int enb = 16;
+const int m21 = 27;
+const int m22 = 14;
+// const int led_f = 5;
+// const int led_a = 23;
+
+void setup() {
+  motora.iniciar(ena, m11, m12);
+  motorb.iniciarPWM(enb, m21, m22, 250);
+  detenerMotores();
+  SerialBT.begin(device_name);
+  // pinMode(buzzer, OUTPUT);
+  // pinMode(led_f,OUTPUT);
+  Serial.begin(9600);
+  Serial.print("todo listo gefecito");
+}
+
+void detenerMotores() {
+  motora.alto();
+  motorb.alto();
+}
+
+void loop() {
+  if (SerialBT.available()) {
+    char data = SerialBT.read();
+    switch (data) {
+      
+      case 'S':  // STOP
+        detenerMotores();
+        Serial.println("alto");
+        break;
+
+      case 'F':  // FORWARD - Adelante
+        motora.mover('F');
+        motorb.moverPWM('F');
+        Serial.println("avanza");
+        break;
+
+      case 'B':  // BACKWARD
+        motora.mover('B');
+        motorb.moverPWM('B');
+        Serial.println("atras");
+        break;
+
+      case 'L':  //izquierda
+        motora.mover('F');
+        motorb.moverPWM('B');
+        Serial.println("izq");
+        break;
+      case 'R':  // LEFT - Giro derecha
+
+        motora.mover('B');
+        motorb.moverPWM('F');
+        Serial.println("der");
+        break;
+
+      case 'V':
+        digitalWrite(buzzer, 1);
+        break;
+
+      case 'v':
+        digitalWrite(buzzer, 0);
+        break;
+
+      case 'W':
+        digitalWrite(led_f, 1);
+        break;
+
+      case 'w':
+        digitalWrite(led_f, 0);
+        break;
+
+      default:
+        motora.alto();
+        motorb.alto();
+        break;
+    }
+  }
+}

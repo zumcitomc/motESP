@@ -25,5 +25,6 @@ public:
 	void moverPWM(char dir);
 	void alto();
 	void seleccionarVelocidad(int valor);
+	void mover_for(int tiempo_ms);
 };
 #endif

@@ -71,3 +71,31 @@ void motesp::moverPWM(char dir){
 void motesp::seleccionarVelocidad(int valor){
 	this->velocidad = valor;
 }
+
+void motesp::mover_for(int tiempo_ms, char direccion){
+	switch direccion{
+		case "F":
+			digitalWrite( en,1);
+			digitalWrite(co1,1);
+			digitalWrite(co2,0);
+		break;
+
+		case "B":
+			digitalWrite( en,1);
+			digitalWrite(co1,0);
+			digitalWrite(co2,1);
+		break;
+
+		case "S":
+			digitalWrite( en,0);
+			digitalWrite(co1,0);
+			digitalWrite(co2,0);
+		break;
+		for(int i = 0;i < tiempo_ms + 1;i++){
+			delay(1);
+		}
+	digitalWrite( en,0);
+	digitalWrite(co1,0);
+	digitalWrite(co2,0);
+	}
+}
